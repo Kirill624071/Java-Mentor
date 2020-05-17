@@ -36,22 +36,12 @@ public class Main {
             firstOperand = checkNumber.getFirstNumber();//здесь мы получаем готовые числа и присваиваем их нашим операндам
             secondOperand = checkNumber.getSecondNumber();
             switch (chStr.getSince()) {//в зависимости от знака совершаем ту или иную операцию над оперендами
-                case '+':
-                    result = firstOperand + secondOperand;
-                    break;
-
-                case '-':
-                    result = firstOperand - secondOperand;
-                    break;
-
-                case '*':
-                    result = firstOperand * secondOperand;
-                    break;
-
+                case '+':                    result = firstOperand + secondOperand;                    break;
+                case '-':                    result = firstOperand - secondOperand;                    break;
+                case '*':                    result = firstOperand * secondOperand;                    break;
                 case '/':
                     if (secondOperand == 0) {//сообщаем пользователю что на ноль делить вредно
                         System.out.println("в этой стране деление на ноль вне закона, за вами уже выехали!!!");
-
                     } else {
                         result = (double) firstOperand / (double) secondOperand;
                     }
@@ -83,67 +73,52 @@ class CheckRomeOrArabicNumber {
     public void pullOutOperands(char since, String s) throws MyException{//метод вытягивания операндов из строки
 //в метод передаем знак операции и саму введеную строку
         index = s.indexOf(since);//вычисляем позицию где там находится знак в строке
-
         firstOperand = s.substring(0, index);//вытаскиваем подстроку до знака
         secondOperand = s.substring(index + 1, s.length()); //вытаскиваем подстроку после знака
-
         if (firstOperand.length() == 0 || secondOperand.length() == 0) { //если длина хоть оодной подстроки == 0
             //это значит ввели чтото типа "+ 10" или "8 +"
             throw new MyException("один из операндов отсутствует");//поэтому если это так выбрасываем исключение
-
         }
     }
 
     public boolean isArabicNumber(String s) { //метод проверяет числа ли это
-
         for (char c : s.toCharArray()) {//цикл форич пробегает по символам
-
             if (!Character.isDigit(c)) { //если хоть один символ не удовлетворяет возвращаем фолс
                 return false;
             }
-
         }
-
         return true;
     }
-
     public boolean isRomeNumber(String s) throws MyException { //метод проверяет римские цифры у нас или нет
-
         if (s.length() > 4) { //так как цифры римские и только до 10 то больше 4 символов быть не может
             throw new MyException("неправильный операнд");
-
         }
-
         s = s.trim(); //у переданной подстроки убираем пробелы по бокам иначе никогда не найдет он там римских цифр
-
         for (char c : s.toCharArray()) {
-
             if (c == 'I' || c == 'X' || c == 'V'){
-
                 return true;
-
             }
-
         }
-
         return false;
     }
 
     public int fromRomeToArabic(String operand){
         int number = 0;
         switch (operand) {
-            case "I":                number = 1;                break;
-            case "II":                number = 2;                break;
-            case "III":                number = 3;                break;
-            case "IV":                number = 4;                break;
-            case "V":                number = 5;                break;
-            case "VI":               number = 6;                break;
-            case "VII":        number = 7;                break;
-            case "VIII":    number = 8;       break;
-            case "IX":    number = 9;         break;
-            case "X":      number = 10;                break;
+            case "I":       number = 1;                break;
+            case "II":      number = 2;                break;
+            case "III":     number = 3;                break;
+            case "IV":      number = 4;                break;
+            case "V":       number = 5;                break;
+            case "VI":      number = 6;                break;
+            case "VII":     number = 7;                break;
+            case "VIII":    number = 8;                break;
+            case "IX":      number = 9;                break;
+            case "X":       number = 10;               break;
+            default: System.out.println("Мы работаем только с числами не более 10");
+            number = 0;
+            break;
         }
-
         return number;
     }
 
@@ -151,46 +126,38 @@ class CheckRomeOrArabicNumber {
 //этот метод смотрит чтобы сразу два числа слева и справа были одного вида либо все арабские либо все римские
         firstOperand = firstOperand.trim();
         secondOperand = secondOperand.trim();
-
         fOperandIsArabic = isArabicNumber(firstOperand);
         sOperandIsArabic = isArabicNumber(secondOperand);
-
         if (fOperandIsArabic && sOperandIsArabic) {
             //если все арабские то переводим все в числа
             firstNumber = Integer.parseInt(firstOperand);
             secondNumber = Integer.parseInt(secondOperand);
             return true;
-
         } else {
             //иначе проверяем может они римские
             fOperandIsRome = isRomeNumber(firstOperand);
             sOperandIsRome = isRomeNumber(secondOperand);
-
             if (fOperandIsRome && sOperandIsRome) {
                 //если оба римские то вызываем метод перевода римских цифр в арабские
                 firstNumber = fromRomeToArabic(firstOperand);
                 secondNumber = fromRomeToArabic(secondOperand);
-
                 return true;
             } else {
-
                 return false;
             }
-
         }
-
     }
 
     public int getFirstNumber(){
         return firstNumber; //возвращаем готовое число если оно есть
-
     }
 
     public int getSecondNumber(){
         return secondNumber;//если второе число есть то тоже возвращаем
-
     }
+
 }
+
 class CheckString {
 
     private int sinceCount;//переменная для подсчета знаков +, /, *, -
@@ -281,100 +248,115 @@ class MyException extends Exception {
 }
 
 class RIM {
-        public static void main2(int args) {
-            String result = "";
-            int y = args; //входная цифра результата
-            if (y>3999 ) {    System.out.println("Числа больше 3999  доступны в платной версии :) "); }
-            String Dec = Integer.toString(y); //преобразуем число в строку
-            int Dlina =Dec.length(); //Длина строки    - количество символов
-            System.out.println("равно "+Dec );
-            System.out.println("---------------------------------------------");
-            RimDelim(Dec);
+    public static void main2(int args) {
+        String result = "";
 
-        }
-        public static  char[] RimDelim (String x){ //выводим все цифры поочередно
-            char[] line = x.toCharArray(); // преобразуем строку в массив символов
-            String result="";
-            int x1 = Character.getNumericValue(line[0]);
-            switch (x.length()){
-                case 1:  RimEdenica(x1);break;
-                case 2: int x2 = Character.getNumericValue(line[1]);//переводим символо в число тип
-                    RimDec(x1);
-                    RimEdenica(x2);
-                    System.out.println(RimDec(x1)+RimEdenica(x2));  break;
-                case 3: int x22 = Character.getNumericValue(line[1]);
-                    int x3 = Character.getNumericValue(line[2]);
-                    RimEdenica(x3);RimDec(x22);RimSot(x1);
-                    System.out.println(RimSot(x1)+RimDec(x22)+RimEdenica(x3));
-                    break;
-                case 4:  int x41 = Character.getNumericValue(line[0]);
-                    int x42 = Character.getNumericValue(line[1]);
-                    int x43 = Character.getNumericValue(line[2]);
-                    int x44 = Character.getNumericValue(line[2]);
-                    RimTis(x41);RimSot(x42);RimDec(x43);RimEdenica(x44);
-                    System.out.println(RimTis(x41)+RimSot(x42)+RimDec(x43)+RimEdenica(x44));break;
-                default:
-                    System.out.println("Числа больше 4 разрядом доступны в платной версии :)");
-            }
-            return line;
-        }
-        public static String RimEdenica(int x) {// из арабской -> римскую
-            String rim = "";
-            switch (x) {
-                case 9:                rim = "IX";break;
-                case 8:                rim = "VIII";break;
-                case 7:                rim = "VII";break;
-                case 6:                rim = "VI";break;
-                case 5:                rim = "V";break;
-                case 4:                rim = "IV";break;
-                case 3:                rim = "III";break;
-                case 2:                rim = "II";break;
-                case 1:                rim = "I";break;
-                default:
-                    rim="";break;
-            }
-            return rim;
-        }  //единицы арабские в римские переводим
-        public static String RimDec(int x) {         //десятки арабские в римские переводим
-            String rim = "";
-            switch (x) {
-                case 9:                rim = "XC";break;
-                case 8:                rim = "LXXX";break;
-                case 7:                rim = "LXX";break;
-                case 6:                rim = "LX";break;
-                case 5:                rim = "L";break;
-                case 4:                rim = "XL";break;
-                case 3:                rim = "XXX";break;
-                case 2:                rim = "XX";break;
-                case 1:                rim = "X";break;
-            }
-            return rim;
-        }
-        public static String RimSot(int x) {// из арабской -> римскую
-            String rim = "";
-            switch (x) {
-                case 9:                rim = "CM";      break;
-                case 8:                rim = "DCCC";    break;
-                case 7:                rim = "DCC";     break;
-                case 6:                rim = "DC";      break;
-                case 5:                rim = "D";       break;
-                case 4:                rim = "CD";      break;
-                case 3:                rim = "CCC";     break;
-                case 2:                rim = "CC";      break;
-                case 1:                rim = "C";       break;
-            }
-            return rim;
-        }
-        public static String RimTis(int x) {// из арабской -> римскую
-            String rim = "";
-            switch (x) {
-                case 3:      rim = "MMM";break;
-                case 2:      rim = "MM";break;
-                case 1:      rim = "M";break;
-            }
-            return rim;
-        }
+        int y = args; //входная цифра результата
+        y= (int) args; //округлили
+        if (y>3999 ) {    System.out.println("Числа больше 3999  доступны в платной версии :) "); }
+        String Dec = Integer.toString(y); //преобразуем число в строку
+        //System.out.println("Округляем число,получили  = "+Dec );
+        System.out.println("---------------------------------------------");
+        RimDelim(Dec);
+
     }
+    public static  char[] RimDelim (String x){ //выводим все цифры поочередно
+        char[] line = x.toCharArray(); // преобразуем строку в массив символов
+        String result="";
+
+        switch (x.length()){
+            case 1:
+                int x1 = Character.getNumericValue(line[0]);
+                RimEdenica(x1);
+                System.out.println("римская цифра = "+RimEdenica(x1));
+                break;
+            case 2: int x2 = Character.getNumericValue(line[1]);//переводим символо в число тип
+                int x21 = Character.getNumericValue(line[0]);
+                RimDec(x21);
+                RimEdenica(x2);
+                System.out.println("римская цифра = "+RimDec(x21)+RimEdenica(x2));  break;
+            case 3:
+                int x31 = Character.getNumericValue(line[0]);
+                int x32 = Character.getNumericValue(line[1]);
+                int x33 = Character.getNumericValue(line[2]);
+                RimEdenica(x33);RimDec(x32);RimSot(x31);
+                System.out.println("римская цифра = "+RimSot(x31)+RimDec(x32)+RimEdenica(x33));
+                break;
+            case 4:  int x41 = Character.getNumericValue(line[0]);
+                int x42 = Character.getNumericValue(line[1]);
+                int x43 = Character.getNumericValue(line[2]);
+                int x44 = Character.getNumericValue(line[2]);
+                RimTis(x41);RimSot(x42);RimDec(x43);RimEdenica(x44);
+                System.out.println("римская цифра = "+RimTis(x41)+RimSot(x42)+RimDec(x43)+RimEdenica(x44));break;
+            default:
+                System.out.println("Числа больше 4 разрядом доступны в платной версии :)");
+        }
+        return line;
+    }
+    public static String RimEdenica(int x) {// из арабской -> римскую
+        String rim = "";
+        switch (x) {
+            case 9:                rim = "IX";break;
+            case 8:                rim = "VIII";break;
+            case 7:                rim = "VII";break;
+            case 6:                rim = "VI";break;
+            case 5:                rim = "V";break;
+            case 4:                rim = "IV";break;
+            case 3:                rim = "III";break;
+            case 2:                rim = "II";break;
+            case 1:                rim = "I";break;
+            default:
+                rim="";break;
+        }
+        return rim;
+    }  //единицы арабские в римские переводим
+    public static String RimDec(int x) {         //десятки арабские в римские переводим
+        String rim = "";
+        switch (x) {
+            case 9:                rim = "XC";break;
+            case 8:                rim = "LXXX";break;
+            case 7:                rim = "LXX";break;
+            case 6:                rim = "LX";break;
+            case 5:                rim = "L";break;
+            case 4:                rim = "XL";break;
+            case 3:                rim = "XXX";break;
+            case 2:                rim = "XX";break;
+            case 1:                rim = "X";break;
+        }
+        return rim;
+    }
+    public static String RimSot(int x) {// из арабской -> римскую
+        String rim = "";
+        switch (x) {
+            case 9:                rim = "CM";      break;
+            case 8:                rim = "DCCC";    break;
+            case 7:                rim = "DCC";     break;
+            case 6:                rim = "DC";      break;
+            case 5:                rim = "D";       break;
+            case 4:                rim = "CD";      break;
+            case 3:                rim = "CCC";     break;
+            case 2:                rim = "CC";      break;
+            case 1:                rim = "C";       break;
+        }
+        return rim;
+    }
+    public static String RimTis(int x) {// из арабской -> римскую
+        String rim = "";
+        switch (x) {
+            case 3:      rim = "MMM";break;
+            case 2:      rim = "MM";break;
+            case 1:      rim = "M";break;
+        }
+        return rim;
+    }
+    public static void CheckNUM(int x){
+        if (x >10) {
+            System.out.println("Числа больше 10 принимаются в платной версии :)");
+                   }
+
+    }
+
+}
 
 
 
