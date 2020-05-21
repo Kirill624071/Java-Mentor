@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 
 public class Main {
 
+
+
     public static void main(String[] args) throws IOException, MyException { //здесь пробрасываем исключения
 //потомучто используется InputStream, и MyException поэтому онизаписываются после ключевого слова throws
         //по другому говоря, мы можем получить исключение и эти штуки пишутсся для возможности его обработки,
@@ -13,6 +15,7 @@ public class Main {
         //а справлялась с этим
         int firstOperand;//смотри, выражение a + b . а - первый операнд (firstOperand), b - второй (secondOperand)
         int secondOperand;
+
         String inputString; //переменная для хранения строки которую введет пользователь
         double result = 0; //результат операции берем тип double потому что может быть деление
         InputOutput io = new InputOutput(); //создаем объект класса InoutOutput вот можно было все эти классы и объекты
@@ -53,10 +56,15 @@ public class Main {
             //а по сути смотри создаем обект нашего класса MyException и передаем в конструктор сообщение которое выводится
             //когда прога падает
         }
-        System.out.println(result);//тут выдаем результат
-        RIM R = new RIM();
-        int result2 = (int) result;
-        R.main2(result2);
+        CheckRomeOrArabicNumber iii = new CheckRomeOrArabicNumber();
+
+        if (iii.setRomNamber){
+                RIM R = new RIM();
+                int result2 = (int) result;
+                R.main2(result2);
+        }else{
+        System.out.println("Ответ =" + result);}//тут выдаем результат
+
     }
 }
 class CheckRomeOrArabicNumber {
@@ -80,7 +88,7 @@ class CheckRomeOrArabicNumber {
             throw new MyException("один из операндов отсутствует");//поэтому если это так выбрасываем исключение
         }
     }
-
+    public static boolean setRomNamber ;
     public boolean isArabicNumber(String s) { //метод проверяет числа ли это
         for (char c : s.toCharArray()) {//цикл форич пробегает по символам
             if (!Character.isDigit(c)) { //если хоть один символ не удовлетворяет возвращаем фолс
@@ -89,6 +97,7 @@ class CheckRomeOrArabicNumber {
         }
         return true;
     }
+
     public boolean isRomeNumber(String s) throws MyException { //метод проверяет римские цифры у нас или нет
         if (s.length() > 4) { //так как цифры римские и только до 10 то больше 4 символов быть не может
             throw new MyException("неправильный операнд");
@@ -96,6 +105,7 @@ class CheckRomeOrArabicNumber {
         s = s.trim(); //у переданной подстроки убираем пробелы по бокам иначе никогда не найдет он там римских цифр
         for (char c : s.toCharArray()) {
             if (c == 'I' || c == 'X' || c == 'V'){
+
                 return true;
             }
         }
@@ -132,6 +142,7 @@ class CheckRomeOrArabicNumber {
             //если все арабские то переводим все в числа
             firstNumber = Integer.parseInt(firstOperand);
             secondNumber = Integer.parseInt(secondOperand);
+            setRomNamber =false;
             return true;
         } else {
             //иначе проверяем может они римские
@@ -141,6 +152,7 @@ class CheckRomeOrArabicNumber {
                 //если оба римские то вызываем метод перевода римских цифр в арабские
                 firstNumber = fromRomeToArabic(firstOperand);
                 secondNumber = fromRomeToArabic(secondOperand);
+                setRomNamber=true;
                 return true;
             } else {
                 return false;
@@ -171,72 +183,48 @@ class CheckString {
     public void checkString (String s) throws MyException {
 //проверка на дурака путую строку не пропускаем
         if (s.equals("")) {
-
             throw new MyException("строка путсая");
-
         } else {
-
             countSince(s);
         }
-
     }
 
     public void countSince(String s) throws MyException{
         //этот метод для проверки строки на много знаковость если их до фига, то отправляем пользователю исключение
         sinceCount = 0;
         char c;
-
         for (int i = 0; i < s.length(); i++) {
             c = s.charAt(i);
-
             if (c == '-' || c == '+' || c == '/' || c == '*') {
-
                 since = c;
                 sinceCount++;
-
             }
         }
-
         if (sinceCount == 0) {
 //а если знаков нет а числа есть то тоже посылаем исключение
             throw new MyException("отсутствуют знаки, считать нечего");
-
         }
-
         if (sinceCount > 1) {
-
             throw new MyException("Вы ввели выражение с более чем одним знаком");
-
         }
-
     }
-
 }
 class InputOutput {
     //этот класс занимается тем что выводит сообщение: Введите сообщение
     //и потом ожидает ввода от пользователя
     private String inputString;
-
     InputOutput(){
-
         inputString = "";
     }
-
     public String readString () throws IOException {
-
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Введите выражение для вычисления: ");
         inputString = reader.readLine();
-
         return inputString;
     }
-
     public void printString (String s) {
-
         System.out.println(s);
-
     }
-
 }
 class MyException extends Exception {
     //а это класс создающий пользовательское исключение. наследуемся от класса Exception и вызываем конструктор родительского класса
@@ -259,39 +247,46 @@ class RIM {
         System.out.println("---------------------------------------------");
         RimDelim(Dec);
 
+
     }
-    public static  char[] RimDelim (String x){ //выводим все цифры поочередно
-        char[] line = x.toCharArray(); // преобразуем строку в массив символов
+    public static void /*String/*char[]*/ RimDelim (String x){ //выводим все цифры поочередно
+        String line0 =""; // преобразуем строку в массив символов
         String result="";
+        char[] line = x.toCharArray();
 
         switch (x.length()){
             case 1:
                 int x1 = Character.getNumericValue(line[0]);
                 RimEdenica(x1);
-                System.out.println("римская цифра = "+RimEdenica(x1));
+               // System.out.println("Ответ = "+RimEdenica(x1));
+                line0 = RimEdenica(x1);
                 break;
             case 2: int x2 = Character.getNumericValue(line[1]);//переводим символо в число тип
                 int x21 = Character.getNumericValue(line[0]);
                 RimDec(x21);
                 RimEdenica(x2);
-                System.out.println("римская цифра = "+RimDec(x21)+RimEdenica(x2));  break;
+               // System.out.println("Ответ = "+RimDec(x21)+RimEdenica(x2));
+                 line0 = RimDec(x21)+RimEdenica(x2);
+                break;
             case 3:
                 int x31 = Character.getNumericValue(line[0]);
                 int x32 = Character.getNumericValue(line[1]);
                 int x33 = Character.getNumericValue(line[2]);
                 RimEdenica(x33);RimDec(x32);RimSot(x31);
-                System.out.println("римская цифра = "+RimSot(x31)+RimDec(x32)+RimEdenica(x33));
+               // System.out.println("Ответ = "+RimSot(x31)+RimDec(x32)+RimEdenica(x33));
+                line0 = RimSot(x31)+RimDec(x32)+RimEdenica(x33);
                 break;
             case 4:  int x41 = Character.getNumericValue(line[0]);
                 int x42 = Character.getNumericValue(line[1]);
                 int x43 = Character.getNumericValue(line[2]);
                 int x44 = Character.getNumericValue(line[2]);
                 RimTis(x41);RimSot(x42);RimDec(x43);RimEdenica(x44);
-                System.out.println("римская цифра = "+RimTis(x41)+RimSot(x42)+RimDec(x43)+RimEdenica(x44));break;
+                //System.out.println("Ответ  = "+RimTis(x41)+RimSot(x42)+RimDec(x43)+RimEdenica(x44));break;
+                 line0 =    RimTis(x41)+RimSot(x42)+RimDec(x43)+RimEdenica(x44);
             default:
                 System.out.println("Числа больше 4 разрядом доступны в платной версии :)");
         }
-        return line;
+        System.out.println("Ответ = "+line0);
     }
     public static String RimEdenica(int x) {// из арабской -> римскую
         String rim = "";
